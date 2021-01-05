@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.platzi.android.rickandmorty.api.*
+import com.platzi.android.rickandmorty.presentation.util.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -63,7 +64,10 @@ class CharacterListViewModel(private val characterRequest: CharacterRequest) : V
 
     fun onRetryGetAllCharacter(itemCount: Int) {
         if (itemCount > 0) {
-            _model.value = Event(CharacterListNavigation.HideLoading)
+            _model.value =
+                Event(
+                    CharacterListNavigation.HideLoading
+                )
             return
         }
 
@@ -79,19 +83,34 @@ class CharacterListViewModel(private val characterRequest: CharacterRequest) : V
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe {
-                    _model.value = Event(CharacterListNavigation.ShowLoading)
+                    _model.value =
+                        Event(
+                            CharacterListNavigation.ShowLoading
+                        )
                 }
                 .subscribe({ characterList ->
                     if (characterList.size < PAGE_SIZE) {
                         isLastPage = true
                     }
 
-                    _model.value = Event(CharacterListNavigation.HideLoading)
-                    _model.value = Event(CharacterListNavigation.ShowCharacterList(characterList))
+                    _model.value =
+                        Event(
+                            CharacterListNavigation.HideLoading
+                        )
+                    _model.value =
+                        Event(
+                            CharacterListNavigation.ShowCharacterList(characterList)
+                        )
                 }, { error ->
                     isLastPage = true
-                    _model.value = Event(CharacterListNavigation.HideLoading)
-                    _model.value = Event(CharacterListNavigation.ShowCharacterListError(error))
+                    _model.value =
+                        Event(
+                            CharacterListNavigation.HideLoading
+                        )
+                    _model.value =
+                        Event(
+                            CharacterListNavigation.ShowCharacterListError(error)
+                        )
                 })
         )
     }

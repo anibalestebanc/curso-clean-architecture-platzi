@@ -1,4 +1,4 @@
-package com.platzi.android.rickandmorty.presentation
+package com.platzi.android.rickandmorty.presentation.util
 
 
 /**
