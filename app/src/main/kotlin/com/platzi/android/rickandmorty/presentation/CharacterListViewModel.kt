@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.platzi.android.rickandmorty.api.*
 import com.platzi.android.rickandmorty.presentation.util.Event
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.platzi.android.rickandmorty.usecases.GetAllCharactersUseCase
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by Anibal Cortez on 04-01-21.
  */
-class CharacterListViewModel(private val characterRequest: CharacterRequest) : ViewModel() {
+class CharacterListViewModel(private val getAllCharactersUseCase: GetAllCharactersUseCase)
+    : ViewModel() {
 
     private val disposable = CompositeDisposable()
 
@@ -76,11 +77,8 @@ class CharacterListViewModel(private val characterRequest: CharacterRequest) : V
 
      fun onGetAllCharacters() {
         disposable.add(
-            characterRequest
-                .getService<CharacterService>()
-                .getAllCharacters(currentPage)
-                .map(CharacterResponseServer::toCharacterServerList)
-                .observeOn(AndroidSchedulers.mainThread())
+            getAllCharactersUseCase
+                .invoke(currentPage)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe {
                     _model.value =

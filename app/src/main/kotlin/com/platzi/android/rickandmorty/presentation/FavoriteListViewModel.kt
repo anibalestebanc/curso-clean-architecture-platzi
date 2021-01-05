@@ -4,17 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.platzi.android.rickandmorty.database.CharacterDao
 import com.platzi.android.rickandmorty.database.CharacterEntity
 import com.platzi.android.rickandmorty.presentation.util.Event
+import com.platzi.android.rickandmorty.usecases.GetAllFavoriteCharactersUseCase
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by Anibal Cortez on 04-01-21.
  */
 class FavoriteListViewModel(
-    private val characterDao: CharacterDao
+    private val getAllFavoriteCharactersUseCase: GetAllFavoriteCharactersUseCase
 ) : ViewModel() {
 
     sealed class FavoriteListNavigation {
@@ -31,10 +30,7 @@ class FavoriteListViewModel(
 
     private val _characterFavoriteList: LiveData<List<CharacterEntity>>
         get() = LiveDataReactiveStreams.fromPublisher(
-            characterDao
-                .getAllFavoriteCharacters()
-                .onErrorReturn { emptyList() }
-                .subscribeOn(Schedulers.io())
+            getAllFavoriteCharactersUseCase.invoke()
         )
     val characterFavoriteList: LiveData<List<CharacterEntity>>
         get() = _characterFavoriteList
@@ -68,6 +64,7 @@ class FavoriteListViewModel(
     favoriteListAdapter.updateData(characterList)
     }
     },{
+
     tvEmptyListMessage.isVisible = true
     favoriteListAdapter.updateData(emptyList())
     })

@@ -15,12 +15,15 @@ import com.platzi.android.rickandmorty.database.CharacterDao
 import com.platzi.android.rickandmorty.database.CharacterDatabase
 import com.platzi.android.rickandmorty.databinding.ActivityCharacterDetailBinding
 import com.platzi.android.rickandmorty.presentation.CharacterDetailViewModel
+import com.platzi.android.rickandmorty.usecases.GetFavoriteCharacterStatusUseCase
+import com.platzi.android.rickandmorty.usecases.GetEpisodeFromCharacterUseCase
+import com.platzi.android.rickandmorty.usecases.UpdateFavoriteCharacterStatusUseCase
 import com.platzi.android.rickandmorty.utils.Constants
 import com.platzi.android.rickandmorty.utils.bindCircularImageUrl
 import com.platzi.android.rickandmorty.utils.showLongToast
 import kotlinx.android.synthetic.main.activity_character_detail.*
 
-class CharacterDetailActivity: AppCompatActivity() {
+class CharacterDetailActivity : AppCompatActivity() {
 
 
     private lateinit var episodeListAdapter: EpisodeListAdapter
@@ -30,8 +33,23 @@ class CharacterDetailActivity: AppCompatActivity() {
 
     private var character: CharacterServer? = null
 
-    private val viewModel : CharacterDetailViewModel by lazy {
-        CharacterDetailViewModel(characterDao, episodeRequest)
+    private val updateFavoriteCharacterStatusUseCase: UpdateFavoriteCharacterStatusUseCase by lazy {
+        UpdateFavoriteCharacterStatusUseCase(characterDao)
+    }
+    private val getEpisodeFromCharacterUseCase: GetEpisodeFromCharacterUseCase by lazy {
+        GetEpisodeFromCharacterUseCase(episodeRequest)
+    }
+
+    private val getCharacterByIdUseCase: GetFavoriteCharacterStatusUseCase by lazy {
+        GetFavoriteCharacterStatusUseCase(characterDao)
+    }
+
+    private val viewModel: CharacterDetailViewModel by lazy {
+        CharacterDetailViewModel(
+            updateFavoriteCharacterStatusUseCase,
+            getCharacterByIdUseCase,
+            getEpisodeFromCharacterUseCase
+        )
     }
 
 
@@ -47,7 +65,7 @@ class CharacterDetailActivity: AppCompatActivity() {
         rvEpisodeList.adapter = episodeListAdapter
 
         character = intent.getParcelableExtra(Constants.EXTRA_CHARACTER)
-        if(character == null){
+        if (character == null) {
             this@CharacterDetailActivity.showLongToast(R.string.error_no_character_data)
             finish()
             return
@@ -57,9 +75,9 @@ class CharacterDetailActivity: AppCompatActivity() {
         characterDao = CharacterDatabase.getDatabase(application).characterDao()
 
 
-        viewModel.model.observe(this, Observer { events->
-            events?.getContentIfNotHandled()?.let { navigation->
-                when(navigation){
+        viewModel.model.observe(this, Observer { events ->
+            events?.getContentIfNotHandled()?.let { navigation ->
+                when (navigation) {
                     CharacterDetailViewModel.CharacterDetailNavigation.ShowProgressBar -> {
                         episodeProgressBar.isVisible = true
                     }
@@ -99,7 +117,7 @@ class CharacterDetailActivity: AppCompatActivity() {
         viewModel.onShowEpisodeList(character!!.episodeList)
 
         characterFavorite.setOnClickListener {
-           viewModel.onUpdateFavoriteCharacterStatus(character!!)
+            viewModel.onUpdateFavoriteCharacterStatus(character!!)
         }
 
     }
@@ -115,7 +133,7 @@ class CharacterDetailActivity: AppCompatActivity() {
     }
 
 
-    private fun updateFavoriteIcon(isFavorite: Boolean?){
+    private fun updateFavoriteIcon(isFavorite: Boolean?) {
         characterFavorite.setImageResource(
             if (isFavorite != null && isFavorite) {
                 R.drawable.ic_favorite
