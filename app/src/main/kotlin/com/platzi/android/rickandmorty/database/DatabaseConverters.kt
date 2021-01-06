@@ -7,13 +7,8 @@ import java.util.*
 
 class ListStringConverters {
 
-    //region Fields
-
     private val gson: Gson = Gson()
 
-    //endregion
-
-    //region Public Methods
 
     @TypeConverter
     fun stringToStringList(data: String?): List<String?>? {
@@ -29,5 +24,4 @@ class ListStringConverters {
         return gson.toJson(someObjects)
     }
 
-    //endregion
 }

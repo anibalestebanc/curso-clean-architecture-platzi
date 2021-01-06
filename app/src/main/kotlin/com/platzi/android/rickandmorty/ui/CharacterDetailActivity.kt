@@ -6,15 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.imagemaker.domain.Character
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.EpisodeListAdapter
 import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
-import com.platzi.android.rickandmorty.api.CharacterServer
 import com.platzi.android.rickandmorty.api.EpisodeRequest
 import com.platzi.android.rickandmorty.database.CharacterDao
 import com.platzi.android.rickandmorty.database.CharacterDatabase
 import com.platzi.android.rickandmorty.databinding.ActivityCharacterDetailBinding
 import com.platzi.android.rickandmorty.presentation.CharacterDetailViewModel
+import com.platzi.android.rickandmorty.presentation.mapper.toDomainCharacter
+import com.platzi.android.rickandmorty.presentation.model.PresentationCharacter
 import com.platzi.android.rickandmorty.usecases.GetFavoriteCharacterStatusUseCase
 import com.platzi.android.rickandmorty.usecases.GetEpisodeFromCharacterUseCase
 import com.platzi.android.rickandmorty.usecases.UpdateFavoriteCharacterStatusUseCase
@@ -31,7 +33,7 @@ class CharacterDetailActivity : AppCompatActivity() {
     private lateinit var episodeRequest: EpisodeRequest
     private lateinit var characterDao: CharacterDao
 
-    private var character: CharacterServer? = null
+    private var character: Character? = null
 
     private val updateFavoriteCharacterStatusUseCase: UpdateFavoriteCharacterStatusUseCase by lazy {
         UpdateFavoriteCharacterStatusUseCase(characterDao)
@@ -64,7 +66,7 @@ class CharacterDetailActivity : AppCompatActivity() {
         }
         rvEpisodeList.adapter = episodeListAdapter
 
-        character = intent.getParcelableExtra(Constants.EXTRA_CHARACTER)
+        character = intent?.getParcelableExtra<PresentationCharacter>(Constants.EXTRA_CHARACTER)?.toDomainCharacter()
         if (character == null) {
             this@CharacterDetailActivity.showLongToast(R.string.error_no_character_data)
             finish()

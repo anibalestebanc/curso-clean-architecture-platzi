@@ -3,8 +3,8 @@ package com.platzi.android.rickandmorty.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.platzi.android.rickandmorty.api.*
-import com.platzi.android.rickandmorty.database.CharacterEntity
+import com.imagemaker.domain.Character
+import com.imagemaker.domain.Episode
 import com.platzi.android.rickandmorty.presentation.util.Event
 import com.platzi.android.rickandmorty.usecases.GetFavoriteCharacterStatusUseCase
 import com.platzi.android.rickandmorty.usecases.GetEpisodeFromCharacterUseCase
@@ -30,13 +30,11 @@ class CharacterDetailViewModel(
         object ShowProgressBar : CharacterDetailNavigation()
         object HideProgressBar : CharacterDetailNavigation()
         data class UpdateFavoriteIcon(val isFavorite: Boolean) : CharacterDetailNavigation()
-        data class ShowEpisodeList(val episodeList: List<EpisodeServer>) :
-            CharacterDetailNavigation()
-
+        data class ShowEpisodeList(val episodeList: List<Episode>) : CharacterDetailNavigation()
         data class ShowEpisodeError(val error: Throwable) : CharacterDetailNavigation()
     }
 
-    fun onValidateFavoriteCharacterStatus(character: CharacterServer) {
+    fun onValidateFavoriteCharacterStatus(character: Character) {
         disposable.add(
             getFavoriteCharacterStatusUseCase
                 .invoke(character.id)
@@ -76,11 +74,10 @@ class CharacterDetailViewModel(
         )
     }
 
-    fun onUpdateFavoriteCharacterStatus(character: CharacterServer) {
-        val characterEntity: CharacterEntity = character.toCharacterEntity()
-        disposable.add(
+    fun onUpdateFavoriteCharacterStatus(character: Character) {
+       disposable.add(
             updateFavoriteCharacterStatusUseCase
-                .invoke(characterEntity)
+                .invoke(character)
                 .subscribe { isFavorite ->
                     // updateFavoriteIcon(isFavorite)
                     _model.value = Event(CharacterDetailNavigation.UpdateFavoriteIcon(isFavorite))

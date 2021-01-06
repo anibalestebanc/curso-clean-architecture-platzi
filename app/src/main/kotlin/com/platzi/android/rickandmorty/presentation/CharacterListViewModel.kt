@@ -3,7 +3,7 @@ package com.platzi.android.rickandmorty.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.platzi.android.rickandmorty.api.*
+import com.imagemaker.domain.Character
 import com.platzi.android.rickandmorty.presentation.util.Event
 import com.platzi.android.rickandmorty.usecases.GetAllCharactersUseCase
 import io.reactivex.disposables.CompositeDisposable
@@ -31,7 +31,7 @@ class CharacterListViewModel(private val getAllCharactersUseCase: GetAllCharacte
         object ShowLoading : CharacterListNavigation()
         object HideLoading : CharacterListNavigation()
         data class ShowCharacterListError(val error: Throwable) : CharacterListNavigation()
-        data class ShowCharacterList(val characterList: List<CharacterServer>) :
+        data class ShowCharacterList(val characterList: List<Character>) :
             CharacterListNavigation()
     }
 

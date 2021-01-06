@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.platzi.android.rickandmorty.database.CharacterEntity
+import com.imagemaker.domain.Character
 import com.platzi.android.rickandmorty.presentation.util.Event
 import com.platzi.android.rickandmorty.usecases.GetAllFavoriteCharactersUseCase
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +17,7 @@ class FavoriteListViewModel(
 ) : ViewModel() {
 
     sealed class FavoriteListNavigation {
-        data class ShowCharacterList(val characterList: List<CharacterEntity>) :
+        data class ShowCharacterList(val characterList: List<Character>) :
             FavoriteListNavigation()
 
         object ShowEmptyList : FavoriteListNavigation()
@@ -28,11 +28,11 @@ class FavoriteListViewModel(
     private val _model = MutableLiveData<Event<FavoriteListNavigation>>()
     val model: LiveData<Event<FavoriteListNavigation>> get() = _model
 
-    private val _characterFavoriteList: LiveData<List<CharacterEntity>>
+    private val _characterFavoriteList: LiveData<List<Character>>
         get() = LiveDataReactiveStreams.fromPublisher(
             getAllFavoriteCharactersUseCase.invoke()
         )
-    val characterFavoriteList: LiveData<List<CharacterEntity>>
+    val characterFavoriteList: LiveData<List<Character>>
         get() = _characterFavoriteList
 
     override fun onCleared() {
@@ -40,7 +40,7 @@ class FavoriteListViewModel(
         disposable.clear()
     }
 
-    fun onFavoriteCharacterList(list : List<CharacterEntity>){
+    fun onFavoriteCharacterList(list : List<Character>){
         if (list.isEmpty()){
             _model.value = Event(FavoriteListNavigation.ShowEmptyList)
             return
@@ -48,28 +48,5 @@ class FavoriteListViewModel(
 
         _model.value = Event(FavoriteListNavigation.ShowCharacterList(list))
     }
-
-    /**
-     *
-    disposable.add(
-    characterDao.getAllFavoriteCharacters()
-    .observeOn(AndroidSchedulers.mainThread())
-    .subscribeOn(Schedulers.io())
-    .subscribe({ characterList ->
-    if(characterList.isEmpty()) {
-    tvEmptyListMessage.isVisible = true
-    favoriteListAdapter.updateData(emptyList())
-    } else {
-    tvEmptyListMessage.isVisible = false
-    favoriteListAdapter.updateData(characterList)
-    }
-    },{
-
-    tvEmptyListMessage.isVisible = true
-    favoriteListAdapter.updateData(emptyList())
-    })
-    )
-     */
-
 
 }

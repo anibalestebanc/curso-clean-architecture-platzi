@@ -1,43 +1,38 @@
 package com.platzi.android.rickandmorty.api
 
-import com.platzi.android.rickandmorty.database.CharacterEntity
-import com.platzi.android.rickandmorty.database.LocationEntity
-import com.platzi.android.rickandmorty.database.OriginEntity
+import com.imagemaker.domain.Character
+import com.imagemaker.domain.Episode
+import com.imagemaker.domain.Location
+import com.imagemaker.domain.Origin
 
-fun CharacterResponseServer.toCharacterServerList(): List<CharacterServer> = results.map {
+fun CharacterResponseServer.toCharacterDomainList(): List<Character> = results.map {
     it.run{
-        CharacterServer(
+        Character(
             id,
             name,
             image,
             gender,
             species,
             status,
-            origin,
-            location,
+            origin.toOriginDomain(),
+            location.toLocationDomain(),
             episodeList.map { episode -> "$episode/" }
         )
     }
 }
 
-fun CharacterServer.toCharacterEntity() = CharacterEntity(
+
+fun OriginServer.toOriginDomain() = Origin(
+    name,
+    url
+)
+
+fun LocationServer.toLocationDomain() = Location(
+    name,
+    url
+)
+
+fun EpisodeServer.toEpisodeDomain() = Episode(
     id,
-    name,
-    image,
-    gender,
-    species,
-    status,
-    origin.toOriginEntity(),
-    location.toLocationEntity(),
-    episodeList
-)
-
-fun OriginServer.toOriginEntity() = OriginEntity(
-    name,
-    url
-)
-
-fun LocationServer.toLocationEntity() = LocationEntity(
-    name,
-    url
+    name
 )

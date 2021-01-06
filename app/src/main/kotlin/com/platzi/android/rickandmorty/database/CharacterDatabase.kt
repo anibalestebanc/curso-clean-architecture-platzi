@@ -10,13 +10,8 @@ import androidx.room.TypeConverters
 @TypeConverters(ListStringConverters::class)
 abstract class CharacterDatabase : RoomDatabase() {
 
-    //region Abstract Methods
 
     abstract fun characterDao(): CharacterDao
-
-    //endregion
-
-    //region Companion Object
 
     companion object {
 
@@ -30,6 +25,5 @@ abstract class CharacterDatabase : RoomDatabase() {
         ).build()
     }
 
-    //endregion
 
 }

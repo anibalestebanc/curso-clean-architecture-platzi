@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.imagemaker.domain.Character
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.CharacterGridAdapter
 import com.platzi.android.rickandmorty.api.*
@@ -123,7 +124,7 @@ class CharacterListFragment : Fragment() {
 
 
     interface OnCharacterListFragmentListener {
-        fun openCharacterDetail(character: CharacterServer)
+        fun openCharacterDetail(character: Character)
     }
 
     companion object {
