@@ -1,4 +1,4 @@
-package com.platzi.android.rickandmorty.usecases
+package com.imagemaker.usecase
 
 import com.imagemaker.data.repository.CharacterRepository
 import io.reactivex.Maybe

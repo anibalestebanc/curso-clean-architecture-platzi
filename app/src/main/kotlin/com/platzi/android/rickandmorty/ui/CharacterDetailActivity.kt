@@ -12,6 +12,9 @@ import com.imagemaker.data.sources.CharacterLocalDataSource
 import com.imagemaker.data.sources.CharacterRemoteDataSource
 import com.imagemaker.data.sources.EpisodeRemoteDataSource
 import com.imagemaker.domain.Character
+import com.imagemaker.usecase.GetEpisodeFromCharacterUseCase
+import com.imagemaker.usecase.GetFavoriteCharacterStatusUseCase
+import com.imagemaker.usecase.UpdateFavoriteCharacterStatusUseCase
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.EpisodeListAdapter
 import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
@@ -19,16 +22,12 @@ import com.platzi.android.rickandmorty.api.CharacterRemoteDataSourceImpl
 import com.platzi.android.rickandmorty.api.CharacterRequest
 import com.platzi.android.rickandmorty.api.EpisodeRemoteDataSourceImpl
 import com.platzi.android.rickandmorty.api.EpisodeRequest
-import com.platzi.android.rickandmorty.database.CharacterDao
 import com.platzi.android.rickandmorty.database.CharacterDatabase
 import com.platzi.android.rickandmorty.database.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.ActivityCharacterDetailBinding
 import com.platzi.android.rickandmorty.presentation.CharacterDetailViewModel
 import com.platzi.android.rickandmorty.presentation.mapper.toDomainCharacter
 import com.platzi.android.rickandmorty.presentation.model.PresentationCharacter
-import com.platzi.android.rickandmorty.usecases.GetFavoriteCharacterStatusUseCase
-import com.platzi.android.rickandmorty.usecases.GetEpisodeFromCharacterUseCase
-import com.platzi.android.rickandmorty.usecases.UpdateFavoriteCharacterStatusUseCase
 import com.platzi.android.rickandmorty.utils.Constants
 import com.platzi.android.rickandmorty.utils.bindCircularImageUrl
 import com.platzi.android.rickandmorty.utils.showLongToast

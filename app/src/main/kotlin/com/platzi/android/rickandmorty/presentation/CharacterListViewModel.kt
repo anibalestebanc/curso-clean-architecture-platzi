@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.imagemaker.domain.Character
+import com.imagemaker.usecase.GetAllCharactersUseCase
 import com.platzi.android.rickandmorty.presentation.util.Event
-import com.platzi.android.rickandmorty.usecases.GetAllCharactersUseCase
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 

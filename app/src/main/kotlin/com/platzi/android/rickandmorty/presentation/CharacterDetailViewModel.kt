@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.imagemaker.domain.Character
 import com.imagemaker.domain.Episode
+import com.imagemaker.usecase.GetEpisodeFromCharacterUseCase
+import com.imagemaker.usecase.GetFavoriteCharacterStatusUseCase
+import com.imagemaker.usecase.UpdateFavoriteCharacterStatusUseCase
 import com.platzi.android.rickandmorty.presentation.util.Event
-import com.platzi.android.rickandmorty.usecases.GetFavoriteCharacterStatusUseCase
-import com.platzi.android.rickandmorty.usecases.GetEpisodeFromCharacterUseCase
-import com.platzi.android.rickandmorty.usecases.UpdateFavoriteCharacterStatusUseCase
 import io.reactivex.disposables.CompositeDisposable
 
 

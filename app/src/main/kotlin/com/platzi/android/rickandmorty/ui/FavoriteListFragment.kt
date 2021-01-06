@@ -13,6 +13,7 @@ import com.imagemaker.data.repository.CharacterRepository
 import com.imagemaker.data.sources.CharacterLocalDataSource
 import com.imagemaker.data.sources.CharacterRemoteDataSource
 import com.imagemaker.domain.Character
+import com.imagemaker.usecase.GetAllFavoriteCharactersUseCase
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.FavoriteListAdapter
 import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
@@ -22,7 +23,6 @@ import com.platzi.android.rickandmorty.database.CharacterDatabase
 import com.platzi.android.rickandmorty.database.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.FragmentFavoriteListBinding
 import com.platzi.android.rickandmorty.presentation.FavoriteListViewModel
-import com.platzi.android.rickandmorty.usecases.GetAllFavoriteCharactersUseCase
 import com.platzi.android.rickandmorty.utils.setItemDecorationSpacing
 import kotlinx.android.synthetic.main.fragment_favorite_list.*
 

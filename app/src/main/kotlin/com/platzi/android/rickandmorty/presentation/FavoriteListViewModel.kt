@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.imagemaker.domain.Character
+import com.imagemaker.usecase.GetAllFavoriteCharactersUseCase
 import com.platzi.android.rickandmorty.presentation.util.Event
-import com.platzi.android.rickandmorty.usecases.GetAllFavoriteCharactersUseCase
 import io.reactivex.disposables.CompositeDisposable
 
 /**
