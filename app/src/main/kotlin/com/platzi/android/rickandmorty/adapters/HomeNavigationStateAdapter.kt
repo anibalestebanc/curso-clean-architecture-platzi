@@ -10,20 +10,14 @@ class HomeNavigationStateAdapter(
     activity: AppCompatActivity
 ) : FragmentStateAdapter(activity) {
 
-    //region Fields
 
     private val homeStateFragmentList: List<Fragment> = listOf(
         CharacterListFragment.newInstance(),
         FavoriteListFragment.newInstance()
     )
 
-    //endregion
-
-    //region Override Methods & Callbacks
-
     override fun getItemCount(): Int = homeStateFragmentList.size
 
     override fun createFragment(position: Int): Fragment = homeStateFragmentList[position]
 
-    //endregion
 }

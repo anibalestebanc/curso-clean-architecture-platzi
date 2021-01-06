@@ -3,9 +3,9 @@ package com.platzi.android.rickandmorty.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.imagemaker.domain.Character
+import com.imagemaker.imagemanager.bindImageUrl
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.databinding.ItemGridFavoriteCharacterBinding
-import com.platzi.android.rickandmorty.utils.bindImageUrl
 import com.platzi.android.rickandmorty.utils.bindingInflate
 import kotlinx.android.synthetic.main.item_grid_favorite_character.view.*
 
@@ -53,6 +53,5 @@ class FavoriteListAdapter(
             itemView.setOnClickListener { listener(item) }
         }
 
-        //endregion
     }
 }

@@ -12,6 +12,7 @@ import com.imagemaker.data.sources.CharacterLocalDataSource
 import com.imagemaker.data.sources.CharacterRemoteDataSource
 import com.imagemaker.data.sources.EpisodeRemoteDataSource
 import com.imagemaker.domain.Character
+import com.imagemaker.imagemanager.bindCircularImageUrl
 import com.imagemaker.usecase.GetEpisodeFromCharacterUseCase
 import com.imagemaker.usecase.GetFavoriteCharacterStatusUseCase
 import com.imagemaker.usecase.UpdateFavoriteCharacterStatusUseCase
@@ -29,7 +30,6 @@ import com.platzi.android.rickandmorty.presentation.CharacterDetailViewModel
 import com.platzi.android.rickandmorty.presentation.mapper.toDomainCharacter
 import com.platzi.android.rickandmorty.presentation.model.PresentationCharacter
 import com.platzi.android.rickandmorty.utils.Constants
-import com.platzi.android.rickandmorty.utils.bindCircularImageUrl
 import com.platzi.android.rickandmorty.utils.showLongToast
 import kotlinx.android.synthetic.main.activity_character_detail.*
 

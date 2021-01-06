@@ -18,8 +18,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     CharacterListFragment.OnCharacterListFragmentListener,
     FavoriteListFragment.OnFavoriteListFragmentListener {
 
-    //region Fields
-
     private val homeStatePageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             viewPager.currentItem = position
@@ -65,6 +63,5 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
         overridePendingTransition(R.anim.entry, R.anim.exit)
     }
-
 
 }
