@@ -6,13 +6,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.imagemaker.data.repository.CharacterRepository
+import com.imagemaker.data.repository.EpisodeRepository
+import com.imagemaker.data.sources.CharacterLocalDataSource
+import com.imagemaker.data.sources.CharacterRemoteDataSource
+import com.imagemaker.data.sources.EpisodeRemoteDataSource
 import com.imagemaker.domain.Character
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.EpisodeListAdapter
 import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
+import com.platzi.android.rickandmorty.api.CharacterRemoteDataSourceImpl
+import com.platzi.android.rickandmorty.api.CharacterRequest
+import com.platzi.android.rickandmorty.api.EpisodeRemoteDataSourceImpl
 import com.platzi.android.rickandmorty.api.EpisodeRequest
 import com.platzi.android.rickandmorty.database.CharacterDao
 import com.platzi.android.rickandmorty.database.CharacterDatabase
+import com.platzi.android.rickandmorty.database.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.ActivityCharacterDetailBinding
 import com.platzi.android.rickandmorty.presentation.CharacterDetailViewModel
 import com.platzi.android.rickandmorty.presentation.mapper.toDomainCharacter
@@ -30,21 +39,49 @@ class CharacterDetailActivity : AppCompatActivity() {
 
     private lateinit var episodeListAdapter: EpisodeListAdapter
     private lateinit var binding: ActivityCharacterDetailBinding
-    private lateinit var episodeRequest: EpisodeRequest
-    private lateinit var characterDao: CharacterDao
 
-    private var character: Character? = null
+    private var character : Character? = null
+
+    private  val episodeRequest: EpisodeRequest by lazy {
+        EpisodeRequest(BASE_API_URL)
+    }
+
+    private  val characterRequest: CharacterRequest by lazy {
+        CharacterRequest(BASE_API_URL)
+    }
+
+    private val characterRemoteDataSource : CharacterRemoteDataSource by lazy {
+        CharacterRemoteDataSourceImpl(characterRequest)
+    }
+
+    private val characterLocalDataSource: CharacterLocalDataSource by lazy {
+        CharacterLocalDataSourceImpl(CharacterDatabase.getDatabase(applicationContext))
+    }
+
+    private val characterRepository : CharacterRepository by lazy {
+        CharacterRepository(characterRemoteDataSource, characterLocalDataSource)
+    }
 
     private val updateFavoriteCharacterStatusUseCase: UpdateFavoriteCharacterStatusUseCase by lazy {
-        UpdateFavoriteCharacterStatusUseCase(characterDao)
+        UpdateFavoriteCharacterStatusUseCase(characterRepository)
     }
+
+    private val episodeRemoteDataSource: EpisodeRemoteDataSource by lazy {
+        EpisodeRemoteDataSourceImpl(episodeRequest)
+    }
+
+    private val episodeRepository: EpisodeRepository by lazy {
+        EpisodeRepository(episodeRemoteDataSource)
+    }
+
     private val getEpisodeFromCharacterUseCase: GetEpisodeFromCharacterUseCase by lazy {
-        GetEpisodeFromCharacterUseCase(episodeRequest)
+        GetEpisodeFromCharacterUseCase(episodeRepository)
     }
 
     private val getCharacterByIdUseCase: GetFavoriteCharacterStatusUseCase by lazy {
-        GetFavoriteCharacterStatusUseCase(characterDao)
+        GetFavoriteCharacterStatusUseCase(characterRepository)
     }
+
 
     private val viewModel: CharacterDetailViewModel by lazy {
         CharacterDetailViewModel(
@@ -67,14 +104,13 @@ class CharacterDetailActivity : AppCompatActivity() {
         rvEpisodeList.adapter = episodeListAdapter
 
         character = intent?.getParcelableExtra<PresentationCharacter>(Constants.EXTRA_CHARACTER)?.toDomainCharacter()
+
         if (character == null) {
             this@CharacterDetailActivity.showLongToast(R.string.error_no_character_data)
             finish()
             return
         }
 
-        episodeRequest = EpisodeRequest(BASE_API_URL)
-        characterDao = CharacterDatabase.getDatabase(application).characterDao()
 
 
         viewModel.model.observe(this, Observer { events ->

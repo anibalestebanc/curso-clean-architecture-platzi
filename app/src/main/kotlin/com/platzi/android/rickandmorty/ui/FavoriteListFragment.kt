@@ -9,13 +9,17 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.imagemaker.data.repository.CharacterRepository
+import com.imagemaker.data.sources.CharacterLocalDataSource
+import com.imagemaker.data.sources.CharacterRemoteDataSource
 import com.imagemaker.domain.Character
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.FavoriteListAdapter
 import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
+import com.platzi.android.rickandmorty.api.CharacterRemoteDataSourceImpl
 import com.platzi.android.rickandmorty.api.CharacterRequest
-import com.platzi.android.rickandmorty.database.CharacterDao
 import com.platzi.android.rickandmorty.database.CharacterDatabase
+import com.platzi.android.rickandmorty.database.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.FragmentFavoriteListBinding
 import com.platzi.android.rickandmorty.presentation.FavoriteListViewModel
 import com.platzi.android.rickandmorty.usecases.GetAllFavoriteCharactersUseCase
@@ -26,11 +30,26 @@ class FavoriteListFragment : Fragment() {
 
     private lateinit var favoriteListAdapter: FavoriteListAdapter
     private lateinit var listener: OnFavoriteListFragmentListener
-    private lateinit var characterRequest: CharacterRequest
-    private lateinit var characterDao: CharacterDao
+
+
+    private  val characterRequest: CharacterRequest by lazy {
+        CharacterRequest(BASE_API_URL)
+    }
+
+    private val characterRemoteDataSource: CharacterRemoteDataSource by lazy {
+        CharacterRemoteDataSourceImpl(characterRequest)
+    }
+
+    private val characterLocalDataSource: CharacterLocalDataSource by lazy {
+        CharacterLocalDataSourceImpl(CharacterDatabase.getDatabase(activity!!.applicationContext))
+    }
+
+    private val characterRepository : CharacterRepository by lazy {
+        CharacterRepository(characterRemoteDataSource, characterLocalDataSource)
+    }
 
     private val getAllFavoriteCharactersUseCase: GetAllFavoriteCharactersUseCase by lazy {
-        GetAllFavoriteCharactersUseCase(characterDao)
+        GetAllFavoriteCharactersUseCase(characterRepository)
     }
 
     private val viewModel : FavoriteListViewModel by lazy {
@@ -51,9 +70,6 @@ class FavoriteListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        characterRequest = CharacterRequest(BASE_API_URL)
-        characterDao = CharacterDatabase.getDatabase(activity!!.applicationContext).characterDao()
 
         return DataBindingUtil.inflate<FragmentFavoriteListBinding>(
             inflater,
