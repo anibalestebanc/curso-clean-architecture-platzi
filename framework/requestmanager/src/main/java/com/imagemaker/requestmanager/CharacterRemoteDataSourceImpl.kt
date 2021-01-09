@@ -18,5 +18,4 @@ class CharacterRemoteDataSourceImpl(
         .getAllCharacters(page)
         .map(CharacterResponseServer::toCharacterDomainList)
         .observeOn(AndroidSchedulers.mainThread())
-
 }

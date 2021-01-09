@@ -38,6 +38,11 @@ dependencies {
 
     implementation kotlinLib
 
+    //Dagger
+    implementation daggerLib
+    kapt daggerCompiler
+
+
     //RxJava
     implementation rxAndroidLib
     implementation rxJavaLib

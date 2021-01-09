@@ -15,13 +15,18 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.platzi.android.rickandmorty.RickAndMortyPlatziApp
 import com.platzi.android.rickandmorty.views.RecyclerViewItemDecoration
 
-fun Context.showLongToast(message: String){
+
+val Context.app: RickAndMortyPlatziApp
+    get() = applicationContext as RickAndMortyPlatziApp
+
+fun Context.showLongToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
 
-fun Context.showLongToast(@StringRes resourceId: Int){
+fun Context.showLongToast(@StringRes resourceId: Int) {
     Toast.makeText(this, resourceId, Toast.LENGTH_LONG).show()
 }
 

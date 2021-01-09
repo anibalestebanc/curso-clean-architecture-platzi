@@ -6,30 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.imagemaker.data.repository.CharacterRepository
-import com.imagemaker.data.repository.EpisodeRepository
-import com.imagemaker.data.sources.CharacterLocalDataSource
-import com.imagemaker.data.sources.CharacterRemoteDataSource
-import com.imagemaker.data.sources.EpisodeRemoteDataSource
 import com.imagemaker.domain.Character
 import com.imagemaker.imagemanager.bindCircularImageUrl
-import com.imagemaker.usecase.GetEpisodeFromCharacterUseCase
-import com.imagemaker.usecase.GetFavoriteCharacterStatusUseCase
-import com.imagemaker.usecase.UpdateFavoriteCharacterStatusUseCase
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.EpisodeListAdapter
-import com.imagemaker.requestmanager.APIConstants.BASE_API_URL
-import com.imagemaker.requestmanager.CharacterRemoteDataSourceImpl
-import com.imagemaker.requestmanager.CharacterRequest
-import com.imagemaker.requestmanager.EpisodeRemoteDataSourceImpl
-import com.imagemaker.requestmanager.EpisodeRequest
-import com.imagemaker.databasemanager.CharacterDatabase
-import com.imagemaker.databasemanager.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.ActivityCharacterDetailBinding
+import com.platzi.android.rickandmorty.di.CharacterDetailComponent
+import com.platzi.android.rickandmorty.di.CharacterDetailModule
 import com.platzi.android.rickandmorty.presentation.CharacterDetailViewModel
 import com.platzi.android.rickandmorty.presentation.mapper.toDomainCharacter
 import com.platzi.android.rickandmorty.presentation.model.PresentationCharacter
 import com.platzi.android.rickandmorty.utils.Constants
+import com.platzi.android.rickandmorty.utils.app
+import com.platzi.android.rickandmorty.utils.getViewModel
 import com.platzi.android.rickandmorty.utils.showLongToast
 import kotlinx.android.synthetic.main.activity_character_detail.*
 
@@ -38,65 +27,18 @@ class CharacterDetailActivity : AppCompatActivity() {
 
     private lateinit var episodeListAdapter: EpisodeListAdapter
     private lateinit var binding: ActivityCharacterDetailBinding
-
     private var character : Character? = null
 
-    private  val episodeRequest: EpisodeRequest by lazy {
-        EpisodeRequest(BASE_API_URL)
-    }
-
-    private  val characterRequest: CharacterRequest by lazy {
-        CharacterRequest(BASE_API_URL)
-    }
-
-    private val characterRemoteDataSource : CharacterRemoteDataSource by lazy {
-        CharacterRemoteDataSourceImpl(
-            characterRequest
-        )
-    }
-
-    private val characterLocalDataSource: CharacterLocalDataSource by lazy {
-        CharacterLocalDataSourceImpl(
-            CharacterDatabase.getDatabase(applicationContext)
-        )
-    }
-
-    private val characterRepository : CharacterRepository by lazy {
-        CharacterRepository(characterRemoteDataSource, characterLocalDataSource)
-    }
-
-    private val updateFavoriteCharacterStatusUseCase: UpdateFavoriteCharacterStatusUseCase by lazy {
-        UpdateFavoriteCharacterStatusUseCase(characterRepository)
-    }
-
-    private val episodeRemoteDataSource: EpisodeRemoteDataSource by lazy {
-        EpisodeRemoteDataSourceImpl(episodeRequest)
-    }
-
-    private val episodeRepository: EpisodeRepository by lazy {
-        EpisodeRepository(episodeRemoteDataSource)
-    }
-
-    private val getEpisodeFromCharacterUseCase: GetEpisodeFromCharacterUseCase by lazy {
-        GetEpisodeFromCharacterUseCase(episodeRepository)
-    }
-
-    private val getCharacterByIdUseCase: GetFavoriteCharacterStatusUseCase by lazy {
-        GetFavoriteCharacterStatusUseCase(characterRepository)
-    }
-
+    private lateinit var characterDetailComponent : CharacterDetailComponent
 
     private val viewModel: CharacterDetailViewModel by lazy {
-        CharacterDetailViewModel(
-            updateFavoriteCharacterStatusUseCase,
-            getCharacterByIdUseCase,
-            getEpisodeFromCharacterUseCase
-        )
+       getViewModel { characterDetailComponent.characterDetailViewModel }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        characterDetailComponent = app.component.inject(CharacterDetailModule())
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_character_detail)
         binding.lifecycleOwner = this@CharacterDetailActivity
@@ -162,7 +104,6 @@ class CharacterDetailActivity : AppCompatActivity() {
         }
 
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
