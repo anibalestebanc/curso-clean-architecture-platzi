@@ -1,4 +1,4 @@
-package com.platzi.android.rickandmorty.database
+package com.imagemaker.databasemanager
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
@@ -8,7 +8,6 @@ import java.util.*
 class ListStringConverters {
 
     private val gson: Gson = Gson()
-
 
     @TypeConverter
     fun stringToStringList(data: String?): List<String?>? {

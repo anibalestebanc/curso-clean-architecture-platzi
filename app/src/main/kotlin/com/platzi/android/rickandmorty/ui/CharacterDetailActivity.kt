@@ -23,8 +23,8 @@ import com.platzi.android.rickandmorty.api.CharacterRemoteDataSourceImpl
 import com.platzi.android.rickandmorty.api.CharacterRequest
 import com.platzi.android.rickandmorty.api.EpisodeRemoteDataSourceImpl
 import com.platzi.android.rickandmorty.api.EpisodeRequest
-import com.platzi.android.rickandmorty.database.CharacterDatabase
-import com.platzi.android.rickandmorty.database.CharacterLocalDataSourceImpl
+import com.imagemaker.databasemanager.CharacterDatabase
+import com.imagemaker.databasemanager.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.ActivityCharacterDetailBinding
 import com.platzi.android.rickandmorty.presentation.CharacterDetailViewModel
 import com.platzi.android.rickandmorty.presentation.mapper.toDomainCharacter
@@ -54,7 +54,9 @@ class CharacterDetailActivity : AppCompatActivity() {
     }
 
     private val characterLocalDataSource: CharacterLocalDataSource by lazy {
-        CharacterLocalDataSourceImpl(CharacterDatabase.getDatabase(applicationContext))
+        CharacterLocalDataSourceImpl(
+            CharacterDatabase.getDatabase(applicationContext)
+        )
     }
 
     private val characterRepository : CharacterRepository by lazy {

@@ -1,4 +1,4 @@
-package com.platzi.android.rickandmorty.database
+package com.imagemaker.databasemanager
 
 import androidx.room.*
 import io.reactivex.Flowable

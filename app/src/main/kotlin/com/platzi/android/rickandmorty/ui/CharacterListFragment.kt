@@ -19,8 +19,8 @@ import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.CharacterGridAdapter
 import com.platzi.android.rickandmorty.api.*
 import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
-import com.platzi.android.rickandmorty.database.CharacterDatabase
-import com.platzi.android.rickandmorty.database.CharacterLocalDataSourceImpl
+import com.imagemaker.databasemanager.CharacterDatabase
+import com.imagemaker.databasemanager.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.FragmentCharacterListBinding
 import com.platzi.android.rickandmorty.presentation.CharacterListViewModel
 import com.platzi.android.rickandmorty.utils.setItemDecorationSpacing
@@ -42,7 +42,9 @@ class CharacterListFragment : Fragment() {
     }
 
     private val characterLocalDataSource: CharacterLocalDataSource by lazy {
-        CharacterLocalDataSourceImpl(CharacterDatabase.getDatabase(activity!!.applicationContext))
+        CharacterLocalDataSourceImpl(
+            CharacterDatabase.getDatabase(activity!!.applicationContext)
+        )
     }
 
     private val characterRepository : CharacterRepository by lazy {

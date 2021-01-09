@@ -1,4 +1,4 @@
-package com.platzi.android.rickandmorty.database
+package com.imagemaker.databasemanager
 
 import com.imagemaker.data.sources.CharacterLocalDataSource
 import com.imagemaker.domain.Character
