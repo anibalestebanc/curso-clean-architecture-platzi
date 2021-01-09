@@ -17,10 +17,11 @@ import com.imagemaker.domain.Character
 import com.imagemaker.usecase.GetAllCharactersUseCase
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.CharacterGridAdapter
-import com.platzi.android.rickandmorty.api.*
-import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
+import com.imagemaker.requestmanager.APIConstants.BASE_API_URL
 import com.imagemaker.databasemanager.CharacterDatabase
 import com.imagemaker.databasemanager.CharacterLocalDataSourceImpl
+import com.imagemaker.requestmanager.CharacterRemoteDataSourceImpl
+import com.imagemaker.requestmanager.CharacterRequest
 import com.platzi.android.rickandmorty.databinding.FragmentCharacterListBinding
 import com.platzi.android.rickandmorty.presentation.CharacterListViewModel
 import com.platzi.android.rickandmorty.utils.setItemDecorationSpacing
@@ -38,7 +39,9 @@ class CharacterListFragment : Fragment() {
     }
 
     private val characterRemoteDataSource : CharacterRemoteDataSource by lazy {
-        CharacterRemoteDataSourceImpl(characterRequest)
+        CharacterRemoteDataSourceImpl(
+            characterRequest
+        )
     }
 
     private val characterLocalDataSource: CharacterLocalDataSource by lazy {

@@ -16,9 +16,9 @@ import com.imagemaker.domain.Character
 import com.imagemaker.usecase.GetAllFavoriteCharactersUseCase
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.FavoriteListAdapter
-import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
-import com.platzi.android.rickandmorty.api.CharacterRemoteDataSourceImpl
-import com.platzi.android.rickandmorty.api.CharacterRequest
+import com.imagemaker.requestmanager.APIConstants.BASE_API_URL
+import com.imagemaker.requestmanager.CharacterRemoteDataSourceImpl
+import com.imagemaker.requestmanager.CharacterRequest
 import com.imagemaker.databasemanager.CharacterDatabase
 import com.imagemaker.databasemanager.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.FragmentFavoriteListBinding
@@ -37,7 +37,9 @@ class FavoriteListFragment : Fragment() {
     }
 
     private val characterRemoteDataSource: CharacterRemoteDataSource by lazy {
-        CharacterRemoteDataSourceImpl(characterRequest)
+        CharacterRemoteDataSourceImpl(
+            characterRequest
+        )
     }
 
     private val characterLocalDataSource: CharacterLocalDataSource by lazy {

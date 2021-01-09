@@ -1,4 +1,4 @@
-package com.platzi.android.rickandmorty.api
+package com.imagemaker.requestmanager
 
 import com.imagemaker.domain.Character
 import com.imagemaker.domain.Episode

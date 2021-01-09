@@ -18,11 +18,11 @@ import com.imagemaker.usecase.GetFavoriteCharacterStatusUseCase
 import com.imagemaker.usecase.UpdateFavoriteCharacterStatusUseCase
 import com.platzi.android.rickandmorty.R
 import com.platzi.android.rickandmorty.adapters.EpisodeListAdapter
-import com.platzi.android.rickandmorty.api.APIConstants.BASE_API_URL
-import com.platzi.android.rickandmorty.api.CharacterRemoteDataSourceImpl
-import com.platzi.android.rickandmorty.api.CharacterRequest
-import com.platzi.android.rickandmorty.api.EpisodeRemoteDataSourceImpl
-import com.platzi.android.rickandmorty.api.EpisodeRequest
+import com.imagemaker.requestmanager.APIConstants.BASE_API_URL
+import com.imagemaker.requestmanager.CharacterRemoteDataSourceImpl
+import com.imagemaker.requestmanager.CharacterRequest
+import com.imagemaker.requestmanager.EpisodeRemoteDataSourceImpl
+import com.imagemaker.requestmanager.EpisodeRequest
 import com.imagemaker.databasemanager.CharacterDatabase
 import com.imagemaker.databasemanager.CharacterLocalDataSourceImpl
 import com.platzi.android.rickandmorty.databinding.ActivityCharacterDetailBinding
@@ -50,7 +50,9 @@ class CharacterDetailActivity : AppCompatActivity() {
     }
 
     private val characterRemoteDataSource : CharacterRemoteDataSource by lazy {
-        CharacterRemoteDataSourceImpl(characterRequest)
+        CharacterRemoteDataSourceImpl(
+            characterRequest
+        )
     }
 
     private val characterLocalDataSource: CharacterLocalDataSource by lazy {

@@ -1,7 +1,9 @@
+include ':framework:requestmanager'
 include ':framework:databasemanager'
 include ':framework:imagemanager'
 include ':usecases'
 include ':data'
 include ':domain'
+
 rootProject.name='RickAndMortyPlatzi'
 include ':app'
