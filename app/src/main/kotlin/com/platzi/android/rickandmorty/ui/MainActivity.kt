@@ -63,5 +63,4 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
         overridePendingTransition(R.anim.entry, R.anim.exit)
     }
-
 }
